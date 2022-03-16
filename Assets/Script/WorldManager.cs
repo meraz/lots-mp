@@ -1,11 +1,21 @@
 
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Lots
 {
     public class WorldManager : MonoBehaviour
     {
+        //private LotsNetworkManager networkManager;
+
+        void Awake()
+        {
+            // TODO meraz get the manager a bit better :)
+            //networkManager = NetworkManager.Singleton.GetComponent<LotsNetworkManager>();
+            //Assert.IsNotNull(networkManager,"NetworkManager cannot be null");
+        }
+
         void OnGUI()
         {
             GUILayout.BeginArea(new Rect(10, 10, 300, 300));
@@ -23,9 +33,9 @@ namespace Lots
             GUILayout.EndArea();
         }
 
-        static void StartButtons()
+        void StartButtons()
         {
-            if (GUILayout.Button("Host")) NetworkManager.Singleton.StartHost();
+            if (GUILayout.Button("Host"))   NetworkManager.Singleton.StartHost();
             if (GUILayout.Button("Client")) NetworkManager.Singleton.StartClient();
             if (GUILayout.Button("Server")) NetworkManager.Singleton.StartServer();
         }
@@ -47,12 +57,12 @@ namespace Lots
                 if (NetworkManager.Singleton.IsServer && !NetworkManager.Singleton.IsClient)
                 {
                     foreach (ulong uid in NetworkManager.Singleton.ConnectedClientsIds)
-                        NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(uid).GetComponent<Player>().ManualMove();
+                        NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(uid).GetComponent<PlayerClientMovement>().ManualMove();
                 }
                 else
                 {
                     var playerObject = NetworkManager.Singleton.SpawnManager.GetLocalPlayerObject();
-                    var player = playerObject.GetComponent<Player>();
+                    var player = playerObject.GetComponent<PlayerClientMovement>();
                     player.ManualMove();
                 }
             }
