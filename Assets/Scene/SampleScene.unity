@@ -296,18 +296,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6245364589056213917, guid: d86d8b017f4138d4d9a4d879ae171dff, type: 3}
-      propertyPath: NetworkConfig.PlayerPrefab
-      value: 
-      objectReference: {fileID: 8376795171631324226, guid: 4b3cd79936d3cdb4c93a6e1e1df254ad, type: 3}
-    - target: {fileID: 6245364589056213917, guid: d86d8b017f4138d4d9a4d879ae171dff, type: 3}
-      propertyPath: NetworkConfig.NetworkPrefabs.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6245364589056213917, guid: d86d8b017f4138d4d9a4d879ae171dff, type: 3}
-      propertyPath: NetworkConfig.NetworkPrefabs.Array.data[0].Prefab
-      value: 
-      objectReference: {fileID: 8376795171631324226, guid: 4b3cd79936d3cdb4c93a6e1e1df254ad, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d86d8b017f4138d4d9a4d879ae171dff, type: 3}
 --- !u!1 &1302776339
@@ -351,7 +339,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1302776339}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d100c923b6e944247b4e99a964d47eab, type: 3}
+  m_Script: {fileID: 11500000, guid: c0a89e183f1d0ed4291511ac91a2c974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1892023655
