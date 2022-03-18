@@ -6,6 +6,7 @@ namespace Lots
     public class PlayerClientMovement : NetworkBehaviour
     {
         private Vector2 desiredPosition = Vector2.zero;
+        public float movementSpeed = 5f;
 
         public override void OnNetworkSpawn()
         {
@@ -18,15 +19,8 @@ namespace Lots
 
         public void ManualMove()
         {
-            if (NetworkManager.Singleton.IsServer)
-            {
-                SubmitPositionRequestClientRpc(GetRandomPosition());
-            }
-            else
-            {
-                desiredPosition = GetRandomPosition();
-                ApplyDesiredPosition();
-            }
+            desiredPosition = GetRandomPosition();
+            ApplyDesiredPosition();
         }
 
         [ClientRpc]
@@ -48,8 +42,8 @@ namespace Lots
 
         void ComputeDesiredPosition()
         {
-            float x = transform.position.x + 50f * Input.GetAxis("Horizontal") * Time.deltaTime;
-            float y = transform.position.y + 50f * Input.GetAxis("Vertical") * Time.deltaTime;
+            float x = transform.position.x + movementSpeed * Input.GetAxis("Horizontal") * Time.deltaTime;
+            float y = transform.position.y + movementSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
 
             desiredPosition = new Vector2(x, y);
         }
