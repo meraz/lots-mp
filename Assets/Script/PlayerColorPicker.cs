@@ -1,18 +1,54 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Lots
 {
-    public class PlayerColorPicker : MonoBehaviour
+    public class PlayerColorPicker : NetworkBehaviour
     {
-        void Start()
+        NetworkColor networkColor;
+        bool networkStarted = false;
+
+        void Awake()
         {
-            var spriteRenderer = GetComponent<SpriteRenderer>();
+          //  Debug.Log("PlayerColorPicker:Awake");
+            networkColor = GetComponent<NetworkColor>();
+        }
+
+        public override void OnNetworkSpawn()
+        {
+         //   Debug.Log("PlayerColorPicker:OnNetworkSpawn");
+            networkStarted = true;
+        }
+
+        void LateUpdate()
+        {
+            if (!networkStarted)
+            {
+                return;
+            }
+
+            if (IsOwner)
+            {
+                SetPlayerColor(ComputePlayerColor());
+            }
+            else
+            {
+                networkColor.SetDirtyRequestServerRpc();
+            }
+
+            Destroy(this);
+        }
+
+        void SetPlayerColor(Color color)
+        {
+            networkColor.SetColorRequestServerRpc(color);
+        }
+
+        Color ComputePlayerColor()
+        {
             Vector3 color = Random.onUnitSphere * 255f;
             float colorW = Random.Range(128, 255);
-            spriteRenderer.color = new Color(color.x, color.y, color.z, colorW);
-            Destroy(this);
+            return new Color(color.x, color.y, color.z, colorW);
         }
     }
 }
