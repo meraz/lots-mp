@@ -7,16 +7,22 @@ public class NetworkColor : NetworkBehaviour
 
     SpriteRenderer spriteRenderer;
 
+    public bool updateOnConnect = true;
+
     void Awake()
     {
-       // PrintMultiplayerDebug("NetworkColor:Awake");
+        PrintMultiplayerDebug("NetworkColor:Awake");
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public override void OnNetworkSpawn()
     {
-        //PrintMultiplayerDebug("NetworkColor:OnNetworkSpawn");
+        PrintMultiplayerDebug("NetworkColor:OnNetworkSpawn");
         color_.OnValueChanged += colorChanged;
+        if (updateOnConnect && !IsOwner)
+        {
+            SetDirtyRequestServerRpc();
+        }
     }
 
     public override void OnNetworkDespawn()
@@ -26,21 +32,21 @@ public class NetworkColor : NetworkBehaviour
 
     public void colorChanged(Color oldColor, Color newColor)
     {
-     //   PrintMultiplayerDebug("NetworkColor:colorChanged");
+        // PrintMultiplayerDebug("NetworkColor:colorChanged");
         spriteRenderer.color = newColor;
     }
 
     [ServerRpc]
     public void SetColorRequestServerRpc(Color color)
     {
-       // PrintMultiplayerDebug("NetworkColor:SetColorRequestServerRpc");
+        // PrintMultiplayerDebug("NetworkColor:SetColorRequestServerRpc");
         color_.Value = color;
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void SetDirtyRequestServerRpc()
     {
-       // PrintMultiplayerDebug("NetworkColor:RequestDirtyServerRpc");
+        // PrintMultiplayerDebug("NetworkColor:RequestDirtyServerRpc");
         color_.SetDirty(true);
     }
 

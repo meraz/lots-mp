@@ -31,10 +31,6 @@ namespace Lots
             {
                 SetPlayerColor(ComputePlayerColor());
             }
-            else
-            {
-                networkColor.SetDirtyRequestServerRpc();
-            }
 
             Destroy(this);
         }
