@@ -1,5 +1,6 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class NetworkColor : NetworkBehaviour
 {
@@ -13,12 +14,13 @@ public class NetworkColor : NetworkBehaviour
     {
         PrintMultiplayerDebug("NetworkColor:Awake");
         spriteRenderer = GetComponent<SpriteRenderer>();
+        Assert.IsNotNull(spriteRenderer, "Sprite Renderer cannot be null.");
     }
 
     public override void OnNetworkSpawn()
     {
         PrintMultiplayerDebug("NetworkColor:OnNetworkSpawn");
-        color_.OnValueChanged += colorChanged;
+        color_.OnValueChanged += onColorChanged;
         if (updateOnConnect && !IsOwner)
         {
             SetDirtyRequestServerRpc();
@@ -27,10 +29,10 @@ public class NetworkColor : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
-        color_.OnValueChanged -= colorChanged;
+        color_.OnValueChanged -= onColorChanged;
     }
 
-    public void colorChanged(Color oldColor, Color newColor)
+    public void onColorChanged(Color oldColor, Color newColor)
     {
         // PrintMultiplayerDebug("NetworkColor:colorChanged");
         spriteRenderer.color = newColor;

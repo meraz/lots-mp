@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.Assertions;
 
 namespace Lots
 {
@@ -10,13 +11,12 @@ namespace Lots
 
         void Awake()
         {
-          //  Debug.Log("PlayerColorPicker:Awake");
             networkColor = GetComponent<NetworkColor>();
+            Assert.IsNotNull(networkColor, "Network color cannot be null.");
         }
 
         public override void OnNetworkSpawn()
         {
-         //   Debug.Log("PlayerColorPicker:OnNetworkSpawn");
             networkStarted = true;
         }
 

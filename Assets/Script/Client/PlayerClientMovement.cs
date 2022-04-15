@@ -1,5 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Assertions;
+using ExtensionMethods;
 
 namespace Lots
 {
@@ -7,6 +9,14 @@ namespace Lots
     {
         private Vector2 desiredPosition = Vector2.zero;
         public float movementSpeed = 5f;
+
+        PlayerState playerState;
+
+        void Awake()
+        {
+            playerState = GetComponent<PlayerState>();
+            Assert.IsNotNull(playerState, "Playerstate cannot be null.");
+        }
 
         public override void OnNetworkSpawn()
         {
@@ -42,10 +52,16 @@ namespace Lots
 
         void ComputeDesiredPosition()
         {
-            float x = transform.position.x + movementSpeed * Input.GetAxis("Horizontal") * Time.deltaTime;
-            float y = transform.position.y + movementSpeed * Input.GetAxis("Vertical") * Time.deltaTime;
-
+            float horizontalDirection = Input.GetAxis("Horizontal");
+            float verticalDirection = Input.GetAxis("Vertical");
+            //Debug.Log($"horizontalDirection={horizontalDirection}");
+            //Debug.Log($"verticalDirection={verticalDirection}");
+            float x = transform.position.x + movementSpeed * horizontalDirection * Time.deltaTime;
+            float y = transform.position.y + movementSpeed * verticalDirection * Time.deltaTime;
             desiredPosition = new Vector2(x, y);
+
+            Vector2 deltaStep = desiredPosition - transform.position.xy();
+            playerState.UpdateState(deltaStep);
         }
 
         void ApplyDesiredPosition()

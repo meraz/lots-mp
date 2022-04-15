@@ -17,6 +17,10 @@ GameObject:
   - component: {fileID: 8173471577474409326}
   - component: {fileID: -2111085197744902168}
   - component: {fileID: 7289922262788945119}
+  - component: {fileID: 2004694025285730458}
+  - component: {fileID: 8775548576199841433}
+  - component: {fileID: 2977455665212692271}
+  - component: {fileID: -8439312654696701530}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -205,3 +209,53 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2004694025285730458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8376795171631324226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 697eb0d556bd39e478d6dc5c892ef8ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movingSpeed: 0
+--- !u!114 &8775548576199841433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8376795171631324226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32211557aa6d01a47a5a3b1cf06ced36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2977455665212692271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8376795171631324226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1032213f69e11a74789eee6d176dc5c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8439312654696701530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8376795171631324226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb5c0e22a524c2847b9af0d023309058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 7289922262788945119}
