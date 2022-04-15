@@ -22,6 +22,7 @@ namespace Lots
         private readonly NetworkVariable<LotsSpriteRenderer> networkSpriteRenderer = new NetworkVariable<LotsSpriteRenderer>();
         private SpriteRenderer spriteRenderer;
 
+        // Variables only needed for the owner
         private LotsSpriteRenderer lastState = new LotsSpriteRenderer(false);
 
         void Awake()
@@ -30,13 +31,19 @@ namespace Lots
             Assert.IsNotNull(spriteRenderer, "SpriteRenderer cannot be null.");
 
             lastState.flipX = spriteRenderer.flipX;
+
+            if (IsOwner)
+            {
+                GetNewState();
+            }
         }
 
         public override void OnNetworkSpawn()
         {
             if (IsOwner)
             {
-                return; // No need to register/deregister callbacks as this change has been applied locally already
+                // No need to register/deregister callbacks as this change has been applied locally already
+                return; 
             }
             networkSpriteRenderer.OnValueChanged += onNetworkChange;
         }
@@ -45,7 +52,8 @@ namespace Lots
         {
             if (IsOwner)
             {
-                return; // No need to register/deregister callbacks as this change has been applied locally already
+                 // No need to register/deregister callbacks as this change has been applied locally already
+                return;
             }
             networkSpriteRenderer.OnValueChanged -= onNetworkChange;
         }
@@ -57,9 +65,9 @@ namespace Lots
 
         void Update()
         {
-            // TODO meraz try to disable this component if you're not the owner, if so then this method does not need to be called.
             if (!IsOwner)
             {
+                // Only the owner needs to check for statechanges
                 return;
             }
 

@@ -1,17 +1,17 @@
-using UnityEngine;
 using UnityEngine.Assertions;
+using Unity.Netcode;
 
 namespace Lots
 {
-    public class NetworkAnimatorTrigger : MonoBehaviour
+    public class NetworkAnimatorTrigger : NetworkBehaviour
     {
-        Animator animator;
+        AnimatorTriggerState animatorTriggerState;
 
         void Awake()
         {
-            animator = GetComponent<Animator>();
-            Assert.IsNotNull(animator, "Animation cannot be null.");
-            // TODO meraz not complete
+            animatorTriggerState = GetComponent<AnimatorTriggerState>();
+            Assert.IsNotNull(animatorTriggerState, "AnimatorTriggerState cannot be null.");
         }
+
     }
 }
