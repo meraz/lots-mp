@@ -3,6 +3,7 @@ using UnityEngine.Assertions;
 
 namespace Lots
 {
+    // TODO meraz remake this same as with sprite data
     public class PlayerAnimationController : MonoBehaviour
     {
         AnimatorTriggerState animatorTriggerState;

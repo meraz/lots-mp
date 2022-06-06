@@ -1,26 +1,27 @@
-using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Assertions;
 
-public class PlayerSpawnProjectile : NetworkBehaviour
+public class PlayerSpawnProjectile : MonoBehaviour
 {
-    public GameObject projectilePrefab; // TODO meraz move out
-
+    // TODO meraz this make been made more generic if the action is registered as a callback/lambda
     static float DefaultCooldown = 1; // TODO meraz use some recipie/blueprint for projectiles instead
 
     float currentTimer = 0;
+    PrefabManager prefabManager;
 
-    public override void OnNetworkSpawn()
+    void Awake()
     {
-        enabled = IsOwner;
+        prefabManager = FindObjectOfType<PrefabManager>();
+        Assert.IsNotNull(prefabManager, "PrefabManager cannot be null");
     }
 
     void FixedUpdate()
     {
-        if(isActionAvailable())
+        if (isActionAvailable())
         {
-            if(Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                spawnProjectileRequestServerRpc();
+                spawnProjectile();
                 setCooldown();
             }
         }
@@ -35,13 +36,12 @@ public class PlayerSpawnProjectile : NetworkBehaviour
         return currentTimer <= 0.0f;
     }
 
-    [ServerRpc]
-    void spawnProjectileRequestServerRpc()
+    void spawnProjectile()
     {
-        GameObject projectile =  Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-        ProjectileMovementServer projectileMovementServer = projectile.GetComponent<ProjectileMovementServer>();
-        projectileMovementServer.veloctity = new Vector2(1,1);
-        projectile.GetComponent<NetworkObject>().Spawn();
+        Debug.Log("spawnProjectile");
+        // Even if this worked, it doesn't, then one would like to get the gameobject back so it's possible to track it, but is it required?
+        // It's not possible to send a GameObject over an RPC call.... so how should I design it?
+        prefabManager.SpawnPrefabServerRpc("Projectile", gameObject.transform.position);
     }
 
     void reduceCooldown()
