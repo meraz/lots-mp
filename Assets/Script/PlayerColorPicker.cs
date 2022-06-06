@@ -1,43 +1,32 @@
 using UnityEngine;
-using Unity.Netcode;
 using UnityEngine.Assertions;
 
 namespace Lots
 {
-    public class PlayerColorPicker : NetworkBehaviour
+    public class PlayerColorPicker : MonoBehaviour
     {
-        NetworkColor networkColor;
-        bool networkStarted = false;
+        SpriteRenderer spriteRenderer;
+        NetworkEntityStatus networkEntityStatus;
 
         void Awake()
         {
-            networkColor = GetComponent<NetworkColor>();
-            Assert.IsNotNull(networkColor, "Network color cannot be null.");
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            Assert.IsNotNull(spriteRenderer, "SpriteRenderer cannot be null");
+            networkEntityStatus = GetComponent<NetworkEntityStatus>();
+            Assert.IsNotNull(networkEntityStatus, "NetworkEntityStatus cannot be null");
         }
 
-        public override void OnNetworkSpawn()
+        void OnGUI()
         {
-            networkStarted = true;
-        }
-
-        void LateUpdate()
-        {
-            if (!networkStarted)
+            if(networkEntityStatus.IsOwner)
             {
-                return;
+                GUILayout.BeginArea(new Rect(10, 300, 300, 300));
+                if (GUILayout.Button("New Color"))
+                {
+                    spriteRenderer.color = ComputePlayerColor();
+                } 
+                GUILayout.EndArea();
             }
-
-            if (IsOwner)
-            {
-                SetPlayerColor(ComputePlayerColor());
-            }
-
-            Destroy(this);
-        }
-
-        void SetPlayerColor(Color color)
-        {
-            networkColor.SetColorRequestServerRpc(color);
         }
 
         Color ComputePlayerColor()

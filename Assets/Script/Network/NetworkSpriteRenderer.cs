@@ -7,23 +7,31 @@ namespace Lots
 {
     public class NetworkSpriteRenderer : NetworkBehaviour
     {
-        public struct LotsSpriteRenderer // TODO meraz better name and perhaps move it
+        public struct SpriteRendererData // TODO meraz perhaps move it
         {
-            public LotsSpriteRenderer(bool flipX)
+            public static SpriteRendererData NewInstance()
             {
-                this.flipX = flipX;
+                return new SpriteRendererData(false);
             }
+
+            private SpriteRendererData(bool flipX)
+            {
+                this.flipX = false;
+                this.color = Color.magenta;
+            }
+
             public bool flipX;
+            public Color color;
         }
 
-        //public bool syncFlipX = true; // TODO meraz use this
-        //public bool syncFlipY = true; // TODO meraz implement support for even syncing more fields
+        // public bool syncFlipX = true; // TODO meraz
+        // public bool syncFlipY = true; // TODO meraz
 
-        private readonly NetworkVariable<LotsSpriteRenderer> networkSpriteRenderer = new NetworkVariable<LotsSpriteRenderer>();
+        private readonly NetworkVariable<SpriteRendererData> networkSpriteRenderer = new NetworkVariable<SpriteRendererData>();
         private SpriteRenderer spriteRenderer;
 
         // Variables only needed for the owner
-        private LotsSpriteRenderer lastState = new LotsSpriteRenderer(false);
+        private SpriteRendererData lastState = SpriteRendererData.NewInstance();
 
         void Awake()
         {
@@ -31,6 +39,7 @@ namespace Lots
             Assert.IsNotNull(spriteRenderer, "SpriteRenderer cannot be null.");
 
             lastState.flipX = spriteRenderer.flipX;
+            lastState.color = spriteRenderer.color;
 
             if (IsOwner)
             {
@@ -58,9 +67,10 @@ namespace Lots
             networkSpriteRenderer.OnValueChanged -= onNetworkChange;
         }
 
-        public void onNetworkChange(LotsSpriteRenderer oldValue, LotsSpriteRenderer newValue)
+        public void onNetworkChange(SpriteRendererData oldValue, SpriteRendererData newValue)
         {
             spriteRenderer.flipX = newValue.flipX;
+            spriteRenderer.color = newValue.color;
         }
 
         void Update()
@@ -73,7 +83,7 @@ namespace Lots
 
             if (hasStateChanged())
             {
-                LotsSpriteRenderer newState = GetNewState();
+                SpriteRendererData newState = GetNewState();
                 PropagateState(newState);
                 lastState = newState;
             }
@@ -81,17 +91,18 @@ namespace Lots
 
         private bool hasStateChanged()
         {
-            return lastState.flipX != spriteRenderer.flipX;
+            return lastState.flipX != spriteRenderer.flipX || lastState.color != spriteRenderer.color;
         }
 
-        private LotsSpriteRenderer GetNewState()
+        private SpriteRendererData GetNewState()
         {
-            LotsSpriteRenderer newState = lastState;
+            SpriteRendererData newState = lastState;
             newState.flipX = spriteRenderer.flipX;
+            newState.color = spriteRenderer.color;
             return newState;
         }
 
-        private void PropagateState(LotsSpriteRenderer newState)
+        private void PropagateState(SpriteRendererData newState)
         {
             if (!IsHost)
             {
@@ -105,7 +116,7 @@ namespace Lots
         }
 
         [ServerRpc]
-        public void PropagateStateServerRpc(LotsSpriteRenderer newState)
+        public void PropagateStateServerRpc(SpriteRendererData newState)
         {
             networkSpriteRenderer.Value = newState;
         }
