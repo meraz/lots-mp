@@ -222,7 +222,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncFlipX: 1
-  syncFlipY: 1
 --- !u!114 &-8439312654696701530
 MonoBehaviour:
   m_ObjectHideFlags: 0

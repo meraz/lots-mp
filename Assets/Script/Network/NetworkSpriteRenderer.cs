@@ -24,7 +24,7 @@ namespace Lots
             public Color color;
         }
 
-        // public bool syncFlipX = true; // TODO meraz
+        public bool syncFlipX = true;
         // public bool syncFlipY = true; // TODO meraz
 
         private readonly NetworkVariable<SpriteRendererData> networkSpriteRenderer = new NetworkVariable<SpriteRendererData>();
@@ -69,7 +69,10 @@ namespace Lots
 
         public void onNetworkChange(SpriteRendererData oldValue, SpriteRendererData newValue)
         {
-            spriteRenderer.flipX = newValue.flipX;
+            if(syncFlipX)
+            {
+                spriteRenderer.flipX = newValue.flipX;
+            }
             spriteRenderer.color = newValue.color;
         }
 
@@ -91,13 +94,25 @@ namespace Lots
 
         private bool hasStateChanged()
         {
-            return lastState.flipX != spriteRenderer.flipX || lastState.color != spriteRenderer.color;
+            if(syncFlipX && lastState.flipX != spriteRenderer.flipX)
+            {
+                return true;
+            }
+
+            if (lastState.color != spriteRenderer.color)
+            {
+                return true;
+            }
+            return false;
         }
 
         private SpriteRendererData GetNewState()
         {
             SpriteRendererData newState = lastState;
-            newState.flipX = spriteRenderer.flipX;
+            if(syncFlipX)
+            {
+                newState.flipX = spriteRenderer.flipX;
+            }
             newState.color = spriteRenderer.color;
             return newState;
         }
