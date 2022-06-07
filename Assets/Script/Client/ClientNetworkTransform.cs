@@ -1,3 +1,7 @@
+/* Credited to Unity
+Unclear which license it falls under, not controlled by meraz.
+*/
+
 using Unity.Netcode.Components;
 using Unity.Netcode;
 using UnityEngine;
