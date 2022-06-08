@@ -5,7 +5,7 @@ using UnityEngine.Assertions;
 
 namespace Lots
 {
-    public class WorldManager : MonoBehaviour
+    public class NetworkManagerWrapper : MonoBehaviour
     {
         //private LotsNetworkManager networkManager;
 

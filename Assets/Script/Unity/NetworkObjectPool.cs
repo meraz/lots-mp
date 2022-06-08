@@ -3,6 +3,8 @@ Boss Room: Small Scale Co-op Sample © 2021 Unity Technologies
 Licensed under the Unity Companion License for Unity-dependent projects (see https://unity3d.com/legal/licenses/unity_companion_license).
 Unless expressly provided otherwise, the Software under this license is made available strictly on an “AS IS” BASIS WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. Please review the license for details on these and other terms and conditions
 https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/blob/main/LICENSE.md
+
+Modified by Rasmus Tilljander to fit my software.
 */
 
 using System;
@@ -20,7 +22,7 @@ namespace BossRoom.Scripts.Shared.Net.NetworkObjectPool
     /// Boss Room uses this for projectiles. In theory it should use this for imps too, but we wanted to show vanilla spawning vs pooled spawning.
     /// Hooks to NetworkManager's prefab handler to intercept object spawning and do custom actions
     /// </summary>
-    public class NetworkObjectPool : NetworkBehaviour
+    public class NetworkObjectPool : NetworkBehaviour, IGameManager
     {
         private static NetworkObjectPool _instance;
 
@@ -45,6 +47,7 @@ namespace BossRoom.Scripts.Shared.Net.NetworkObjectPool
             {
                 _instance = this;
             }
+            InitializePool();
         }
 
         public override void OnNetworkSpawn()
