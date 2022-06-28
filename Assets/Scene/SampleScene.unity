@@ -487,6 +487,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3543373095394605489, guid: 65e48f78ccdcf104293e86fb025a3a58, type: 3}
+      propertyPath: PooledPrefabsList.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3543373095394605489, guid: 65e48f78ccdcf104293e86fb025a3a58, type: 3}
       propertyPath: PooledPrefabsList.Array.data[1].Prefab
       value: 
       objectReference: {fileID: 8376795171631324226, guid: 4b3cd79936d3cdb4c93a6e1e1df254ad, type: 3}
@@ -503,6 +507,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 616794605501961660, guid: d86d8b017f4138d4d9a4d879ae171dff, type: 3}
+      propertyPath: NetworkConfig.NetworkPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 616794605501961660, guid: d86d8b017f4138d4d9a4d879ae171dff, type: 3}
+      propertyPath: NetworkConfig.NetworkPrefabs.Array.data[1].Prefab
+      value: 
+      objectReference: {fileID: 1361712464915825363, guid: f508553d0d0153246a143a8721a0ecec, type: 3}
     - target: {fileID: 6970578225063767139, guid: d86d8b017f4138d4d9a4d879ae171dff, type: 3}
       propertyPath: m_RootOrder
       value: 4

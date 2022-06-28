@@ -22,14 +22,14 @@ namespace BossRoom.Scripts.Shared.Net.NetworkObjectPool
     /// Boss Room uses this for projectiles. In theory it should use this for imps too, but we wanted to show vanilla spawning vs pooled spawning.
     /// Hooks to NetworkManager's prefab handler to intercept object spawning and do custom actions
     /// </summary>
-    public class NetworkObjectPool : NetworkBehaviour, IGameManager
+    public class NetworkObjectPool : NetworkBehaviour, IGameManager, IGameObjectPool
     {
         private static NetworkObjectPool _instance;
 
         public static NetworkObjectPool Singleton { get { return _instance; } }
 
         [SerializeField]
-        List<PoolConfigObject> PooledPrefabsList;
+        List<PoolConfigObject> PooledPrefabsList = new List<PoolConfigObject>();
 
         HashSet<GameObject> prefabs = new HashSet<GameObject>();
 
@@ -47,11 +47,11 @@ namespace BossRoom.Scripts.Shared.Net.NetworkObjectPool
             {
                 _instance = this;
             }
-            InitializePool();
         }
 
         public override void OnNetworkSpawn()
         {
+            Debug.Log("OnNetworkSpawn");
             InitializePool();
         }
 
@@ -117,6 +117,14 @@ namespace BossRoom.Scripts.Shared.Net.NetworkObjectPool
             Assert.IsFalse(prefabs.Contains(prefab), $"Prefab {prefab.name} is already registered in the pool.");
 
             RegisterPrefabInternal(prefab, prewarmCount);
+        }
+
+        /// <summary>
+        /// Adds a prefab to the list of spawnable prefabs in the same way one would modify the list in the editor. This function has no effect if called during runtime.
+        /// </summary>
+        public void RegisterPrefabEditor(GameObject prefab, int prewarmCount = 1)
+        {
+            PooledPrefabsList.Add(new PoolConfigObject(prefab, prewarmCount));
         }
 
         /// <summary>
@@ -205,6 +213,11 @@ namespace BossRoom.Scripts.Shared.Net.NetworkObjectPool
     [Serializable]
     struct PoolConfigObject
     {
+        public PoolConfigObject(GameObject prefab, int preWarmCount)
+        {
+            Prefab = prefab;
+            PrewarmCount = preWarmCount;
+        }
         public GameObject Prefab;
         public int PrewarmCount;
     }

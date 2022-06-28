@@ -1,3 +1,4 @@
+using BossRoom.Scripts.Shared.Net.NetworkObjectPool;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -7,12 +8,12 @@ public class PlayerSpawnProjectile : MonoBehaviour
     static float DefaultCooldown = 1; // TODO meraz use some recipie/blueprint for projectiles instead
 
     float currentTimer = 0;
-    PrefabManager prefabManager;
+    NetworkObjectPool networkObjectPool;
 
     void Awake()
     {
-        prefabManager = FindObjectOfType<PrefabManager>();
-        Assert.IsNotNull(prefabManager, "PrefabManager cannot be null");
+        networkObjectPool = NetworkObjectPool.Singleton;
+        Assert.IsNotNull(networkObjectPool, "NetworkObjectPool cannot be null");
     }
 
     void FixedUpdate()
@@ -39,9 +40,10 @@ public class PlayerSpawnProjectile : MonoBehaviour
     void spawnProjectile()
     {
         Debug.Log("spawnProjectile");
+        Assert.IsTrue(false);// TODO meraz this need to be implemented
         // Even if this worked, it doesn't, then one would like to get the gameobject back so it's possible to track it, but is it required?
         // It's not possible to send a GameObject over an RPC call.... so how should I design it?
-        prefabManager.SpawnPrefabServerRpc("Projectile", gameObject.transform.position);
+        //networkObjectPool.SpawnPrefabServerRpc("Projectile", gameObject.transform.position);
     }
 
     void reduceCooldown()
